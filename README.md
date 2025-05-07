@@ -1,6 +1,6 @@
 
 
-# DOM Manipulation - Tooltip & Table of Contents Generator
+## DOM Manipulation - Tooltip & Table of Contents Generator
 
 See the live version of this project (if deployed).
 
@@ -17,7 +17,8 @@ Image-based tooltips – display an image inside the tooltip box.
 All elements are created dynamically using JavaScript, preserving the original content while enriching the interaction experience.
 
 Example transformation:
-``` <span class="tooltip"
+```
+<span class="tooltip"
       data-url="https://example.com"
       data-tooltip-type="text"
       data-tooltip-content="Extra info here">
@@ -26,200 +27,54 @@ Example transformation:
 ```
 
 Becomes:
-``` <span class="tooltip">
+```
+<span class="tooltip">
   <a href="https://example.com">tooltip text</a>
   <span class="tooltip__box tooltip__box--text">Extra info here</span>
 </span>
 ```
 
-### Problem 1: Wygenerowanie linków z *tooltipem* po najechaniu kursorem na element
+## Table of Contents Generator
 
-> *Tooltip* to dymek z dodatkową informacją. Pojawia się on w okolicy elementu po kliknięciu lub najechaniu na niego. Przykład możemy zobaczyć [tutaj](https://www.w3schools.com/css/tryit.asp?filename=trycss_tooltip).
+Generates a structured table of contents (<ul>) based on a dynamic JavaScript array of objects, which includes parent-child relationships between topics.
 
-> Problem rozwiązujemy w pliku `./assets/js/introduction.js`
+Top-level items are detected by parentId: null.
 
-Musimy zmodyfikować element o klasie `.tooltip` w taki sposób, aby generował on prawidłową strukturę zgodną z CSS. Obecnie ten element wygląda w tak:
+Nested items are inserted under their respective parent elements.
+
+The system builds a nested list structure which is appended to the .article__list element in the DOM.
+
+Handles changing input data without needing to manually update the HTML.
 
 
+&nbsp;
+ 
+## 💡 Technologies
+<img src="https://skillicons.dev/icons?i=html,css,scss,javascript" /><br/>
 
-Zawartość elementu o klasie `.tooltip`, tj. tekst `skryptowy`, trzeba zamienić (nadpisać) na dwa elementy (dzieci). Należy zwrócić uwagę, że pierwszy z nich, `<a>`, zwiera tekst, który przed modyfikacją stanowi zawartość elementu o klasie `.tooltip`.
 
-Musimy zatem dla każdego elementu o klasie `.tooltip` utworzyć dwoje dzieci, tj. `<a>` oraz `<span>`, z odpowiednimi atrybutami i zawartością, a następnie dodać je do `.tooltip`. Aby rozwiązać ten problem, użyj metody `.queyrSelectorAll()` i pętli  `for` lub metody `.forEach()`.
-
-Zawartość dla elementów-dzieci pobierzesz z `dataset`:
-
- - adres dla linku => `.dataset.url`
- - typ tooltipa => `.dataset.tooltipType`
- - zawartość tooltipa => `.dataset.tooltipContent`.
-
-Zwrócić uwagę, że mamy **różne typy tooltipów**. Może to być tooltip tekstowy (`text`) oraz obrazkowy (`image`).
-
-Jeśli tooltip jest typem obrazkowym, musi mieć inną strukturę:
-
-```html
-<a href="https://pl.wikipedia.org/wiki/Strona_internetowa">
-    stronach internetowych
-</a>
-<span class="tooltip__box tooltip__box--image">
-    <img class="tooltip__image" 
-        src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Firefox_57.0.png/640px-Firefox_57.0.png">
-</span>
-```
-
-Jeśli prawidłowo wykonamy podmianę struktury, to po najechaniu kursorem na `.tooltip` powinniśmy obok elementu zobaczyć dodatkową informację:
-
-![](assets/img/example1.png)
-
-W zależności od typu tooltipa będzie ona inaczej wyglądać.
-
-### Problem 2: Wygenerowanie spisu treści na podstawie tablicy obiektów
-
-> Problem rozwiązujemy w pliku `./assets/js/list.js`.
-
-Otrzymaliśmy od klienta spis treści w formie tablicy obiektów.
-
-```javascript
-const list = [
-    {
-        id: 1,
-        parentId: null,
-        text: 'Zastosowanie',
-        link: '#Zastosowanie',
-    },
-    {
-        id: 44,
-        parentId: null,
-        text: 'Historia',
-        link: '#Historia',
-    },
-    {
-        id: 7,
-        parentId: 44,
-        text: 'Dialekty',
-        link: '#Dialekty',
-    },
-    {
-        id: 31,
-        parentId: 44,
-        text: 'Java',
-        link: '#Java',
-    },
-    {
-        id: 24,
-        parentId: null,
-        text: 'JavaScript dla WWW',
-        link: '#JavaScript_dla_WWW',
-
-    },
-    {
-        id: 10,
-        parentId: 24,
-        text: 'Interakcja',
-        link: '#Interakcja'
-    },
-    {
-        id: 25,
-        parentId: 24,
-        text: 'Osadzanie',
-        link: '#Osadzanie',
-    }
-];
-```
-
-Klient zaznaczył, że ta tablica może ulegać modyfikacji i nasze rozwiązanie musi być na tyle elastyczne, aby zmiana zawartości tablicy nie powodowała problemów z generowaniem spisu treści.
-
-Tablica ta zawiera obiekty z odpowiednimi danymi:
-
-```javascript
-{
-    id: 1,
-    parentId: null,
-    text: 'Zastosowanie',
-    link: '#Zastosowanie',
-}
-```
-
-gdzie:
-* **id** – unikalny identyfikator każdego elementu
-* **parentId** – id rodzica lub `null`; ten element określa, czy nasz obiekt jest dzieckiem (posiada ustawiony `parentId`), czy rodzicem (wówczas `parentId` ma wartość `null`)
-* **text** – zawartość tekstowa dla elementu `<a/>`
-* **link** – zawartość dla atrybutu `href` w `</a>`
-
-Na podstawie tych danych musimy wygenerować taki kod HTML:
-
-```html
-<ul>
-    <li data-id="1">
-        <a href="#Zastosowanie">Zastosowanie</a>
-        </li>
-    <li data-id="44">
-        <a href="#Historia">Historia</a>
-        <ul>
-            <li><a href="#Dialekty">Dialekty</a></li>
-            <li><a href="#Java">Java</a></li>
-        </ul>
-    </li>
-    <li data-id="24">
-        <a href="#JavaScript_dla_WWW">JavaScript dla WWW</a>
-        <ul>
-            <li><a href="#Interakcja">Interakcja</a></li>
-            <li><a href="#Osadzanie">Osadzanie</a></li>
-        </ul>
-    </li>
-    <li data-id="6">
-        <a href="Linki zewnętrzne">Przypisy</a>
-    </li>
-</ul>
-```
-
-i wstawić go do elementu `.article__list`.
-
-Głównym problemem jest tutaj różny poziom zagnieżdżenia tych elementów. Moglibyśmy rozróżnić dwa poziomy:
-
- 1. Pierwszy to ten, który dotyczy elementów o właściwości `.parentId` równej `null`.
- 2. Drugi poziom to elementy, które mają rodziców.
-
-#### Propozycja rozwiązania
-
-> Ten problem jest na tyle złożony, że można go rozwiązać na wiele sposobów. Ja zaproponuję jeden z nich, ale to nie oznacza, że nie można zrobić tego inaczej (i lepiej!).
-
-Najpierw generuję tylko elementy, które są na 1 poziomie zagnieżdżenia. Tutaj wykorzystuję `.forEach` lub pętlę `for` oraz warunek `if` wewnątrz iteracji. Sprawdzam tylko, czy `parentId` jest równe `null`. Jeśli tak, to tworzę odpowiednią zawartość, a do `dataset.id` dopisuję id elementu – aby potem wiedzieć, jaki ten element ma identyfikator. 
-
-Wygenerowany kod powinien wyglądać mniej więcej tak:
-
-```html
-<li data-id="44"><a href="#Historia">Historia</a></li>
-```
-
-Następnie wyszukuję w dokumencie wszystkie `li` znajdujące się w odpowiedniej sekcji i znów wykorzystuję pętlę, aby odnieść się do każdego elementu z osobna.
-
-Wewnątrz tej pętli mogę pobrać `id` danego elementu np. przez `const id = Number(item.dataset.id)`.
-
-Następnie w tablicy `list` wyszukuję wszystkie obiekty, które posiadają `parentId` równy pobranemu `id`.
-
-Mogę to zrobić za pomocą metody [`.filter()`](https://developer.mozilla.org/pl/docs/Web/JavaScript/Referencje/Obiekty/Array/filter) wykonanej na tablicy.
-
-```javascript
-const children = list.filter(function(element) {
-    return element.parentId === id
-});
-```
-
-Dzięki temu rozwiązaniu wiem, jakie elementy muszę utworzyć dla tego zagnieżdżenia (pamiętaj, że może ich nie być w ogóle). Znów piszę kod, który tworzy mi `ul` oraz pętlę dla `li`.
-
-Efekt działania naszego kodu powinien być taki jak zakomentowany kod HTML w odpowiedniej sekcji.
-
-Spis treści natomiast ma prezentować się mniej więcej tak:
-
-![](assets/img/example2.png)
-
-Po kliknięciu w element listy powinieneś zostać przekierowany do odpowiedniego nagłówka w treści strony. 
-
-Płynne przejście jest realizowane przez CSS! Zobacz reguły CSS przypisane do znacznika `html`.
+&nbsp;
+ 
+## 💿 Installation
+No installation required. Just open the index.html file in your browser, and make sure the scripts inside /assets/js/introduction.js and /assets/js/list.js are correctly loaded.
 
 
 &nbsp;
 
-> ⭐ ***README** to coś więcej niż opis. Poprzez nie **pokazujesz swoje mocne strony** – swoją dokładność, sposób myślenia i podejście do rozwiązywania problemów. Niech Twoje README pokaże, że masz **świetne predyspozycje do rozwoju!***
-> 
-> 🎁 *Zacznij od razu. Skorzystaj z **[szablonu README i wskazówek](https://github.com/devmentor-pl/readme-template)**.* 
+## 💭 Conclusions from project
+
+      • Dynamic DOM handling – Proper use of querySelectorAll, dataset, and event delegation is crucial for manipulating existing elements.
+      • Flexible structure generation – Building nested trees from flat data arrays teaches the fundamentals of tree traversal and recursion.
+      • Component-based thinking – Keeping functionality modular (e.g., separating tooltip logic from list generation) improves scalability.
+      • Data-driven UI – The UI responds purely to data, not hardcoded markup.
+
+This project highlights strong fundamentals in DOM manipulation, dataset handling, and dynamic HTML structure generation — essential skills for any aspiring frontend developer.
+
+&nbsp;
+
+## 🙋‍♂️ Feel free to Reach Out!
+If you have questions, ideas, or just want to chat about code (or the meaning of life), don’t hesitate to contact me. Open an issue, drop me a pull request, or send a message—carrier pigeon works too, but GitHub might be faster. Let’s build something awesome together! 🚀
+
+
+
+
