@@ -1,20 +1,34 @@
-> ⭐ ***README** to coś więcej niż opis. Poprzez nie **pokazujesz swoje mocne strony** – swoją dokładność, sposób myślenia i podejście do rozwiązywania problemów. Niech Twoje README pokaże, że masz **świetne predyspozycje do rozwoju!***
-> 
-> 🎁 *Zacznij od razu. Skorzystaj z **[szablonu README i wskazówek](https://github.com/devmentor-pl/readme-template)**.* 
-
-&nbsp;
 
 
+# DOM Manipulation - Tooltip & Table of Contents Generator
 
-# JavaScript: Elementy DOM
+See the live version of this project (if deployed).
 
-W tym projekcie będziemy musieli utworzyć nowe elementy w drzewie DOM, wyszukać już istniejące i dodać do nich odpowiednie klasy, atrybuty czy zawartość.
+This project was created during my learning journey with the mentor program at devmentor.pl. It demonstrates the practical use of JavaScript to dynamically manipulate the DOM without modifying the original HTML or CSS files.
 
-## Jaki mamy problem do rozwiązania?
+## Key Functionalities
 
-Otrzymaliśmy gotowy kod HTML i CSS, ale niestety nie możemy go modyfikować. Wszystko musi zostać zrobione z poziomu kodu JS.
+Enhances elements with the .tooltip class by dynamically generating a proper tooltip structure using dataset attributes. It supports two types of tooltips:
 
-Zleceniodawca nie chce nam powiedzieć, dlaczego tak jest. Godzimy się na jego warunki, ponieważ chcemy zdobyć komercyjne doświadczenie!
+Text-based tooltips – display a simple text box.
+
+Image-based tooltips – display an image inside the tooltip box.
+
+All elements are created dynamically using JavaScript, preserving the original content while enriching the interaction experience.
+
+Example transformation:
+```<span class="tooltip"
+      data-url="https://example.com"
+      data-tooltip-type="text"
+      data-tooltip-content="Extra info here">
+  tooltip text
+</span> ```
+
+Becomes:
+```<span class="tooltip">
+  <a href="https://example.com">tooltip text</a>
+  <span class="tooltip__box tooltip__box--text">Extra info here</span>
+</span> ```
 
 ### Problem 1: Wygenerowanie linków z *tooltipem* po najechaniu kursorem na element
 
