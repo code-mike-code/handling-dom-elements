@@ -2,7 +2,7 @@
 
 ## DOM Manipulation - Tooltip & Table of Contents Generator
 
-See the live version of this project (if deployed).
+See the live version of this project ([deployed](https://code-mike-code.github.io/handling-dom-elements/)).
 
 This project was created during my learning journey with the mentor program at devmentor.pl. It demonstrates the practical use of JavaScript to dynamically manipulate the DOM without modifying the original HTML or CSS files.
 
