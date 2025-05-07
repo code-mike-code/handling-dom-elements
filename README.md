@@ -17,7 +17,7 @@ Image-based tooltips – display an image inside the tooltip box.
 All elements are created dynamically using JavaScript, preserving the original content while enriching the interaction experience.
 
 Example transformation:
-```<span class="tooltip"
+``` <span class="tooltip"
       data-url="https://example.com"
       data-tooltip-type="text"
       data-tooltip-content="Extra info here">
@@ -25,7 +25,7 @@ Example transformation:
 </span> ```
 
 Becomes:
-```<span class="tooltip">
+``` <span class="tooltip">
   <a href="https://example.com">tooltip text</a>
   <span class="tooltip__box tooltip__box--text">Extra info here</span>
 </span> ```
@@ -38,32 +38,7 @@ Becomes:
 
 Musimy zmodyfikować element o klasie `.tooltip` w taki sposób, aby generował on prawidłową strukturę zgodną z CSS. Obecnie ten element wygląda w tak:
 
-```html
-<span 
-    class="tooltip"
-    data-url="https://pl.wikipedia.org/wiki/J%C4%99zyk_skryptowy" 
-    data-tooltip-type="text"
-    data-tooltip-content="Język skryptowy (ang. script language) – język programowania obsługujący skrypty[1]. Często służący do kontrolowania określonej aplikacji."
->
-    skryptowy
-</span>
-```
 
-Zwiera mnóstwo informacji. Nam zależy na tym, aby za ich pomocą utworzyć poniższy element:
-
-```html
-<span 
-    class="tooltip"
-    ...
->
-    <a href="https://pl.wikipedia.org/wiki/J%C4%99zyk_skryptowy">
-        skryptowy
-    </a>
-    <span class="tooltip__box tooltip__box--text">
-        Język skryptowy (ang. script language) – język programowania obsługujący skrypty[1]. Często służący do kontrolowania określonej aplikacji.
-    </span>
-</span>
-```
 
 Zawartość elementu o klasie `.tooltip`, tj. tekst `skryptowy`, trzeba zamienić (nadpisać) na dwa elementy (dzieci). Należy zwrócić uwagę, że pierwszy z nich, `<a>`, zwiera tekst, który przed modyfikacją stanowi zawartość elementu o klasie `.tooltip`.
 
