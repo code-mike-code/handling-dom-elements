@@ -22,13 +22,15 @@ Example transformation:
       data-tooltip-type="text"
       data-tooltip-content="Extra info here">
   tooltip text
-</span> ```
+</span>
+```
 
 Becomes:
 ``` <span class="tooltip">
   <a href="https://example.com">tooltip text</a>
   <span class="tooltip__box tooltip__box--text">Extra info here</span>
-</span> ```
+</span>
+```
 
 ### Problem 1: Wygenerowanie linków z *tooltipem* po najechaniu kursorem na element
 
