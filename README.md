@@ -50,7 +50,7 @@ Handles changing input data without needing to manually update the HTML.
 &nbsp;
  
 ## 💡 Technologies
-<img src="https://skillicons.dev/icons?i=html,css,scss,javascript" /><br/>
+<img src="https://skillicons.dev/icons?i=html,css,javascript" /><br/>
 
 
 &nbsp;
